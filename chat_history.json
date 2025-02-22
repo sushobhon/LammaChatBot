@@ -1,0 +1,22 @@
+[
+    {
+        "user": "How many platet we have in solar system",
+        "bot": "I don't know."
+    },
+    {
+        "user": "What was my previous question",
+        "bot": "I can answer that for you. Your previous question was \"What is Uno\"."
+    },
+    {
+        "user": "How many cards a player has at the start of a uno game",
+        "bot": "A player starts with 7 cards in a standard Uno deck."
+    },
+    {
+        "user": "what is the goal of uno game",
+        "bot": "The goal of the Uno game is to be the first player to get rid of all the cards in their hand. The player who scores points for the cards their opponents are left holding wins the game, with the first player to score 500 points declared the winner."
+    },
+    {
+        "user": "what is monopoly",
+        "bot": "I don't know."
+    }
+]
