@@ -16,4 +16,4 @@ This repository contains the code for a Retrieval-Augmented Generation (RAG) Que
 2. Clone the repository.
 3. Create an environment based on requirment file.
 4. Run run.py to chat.
-5.  To Add or Remove any document just add the document in 'data' folder.
+5. To Add or Remove any document just add the document in 'data' folder.
