@@ -43,17 +43,10 @@ def load_and_embed_pdf(pdf_path, collection):
             print(f"{pdf_path} (unchanged) already in the collection.")
             return
         
-    # if os.path.isdir(pdf_path):
-    #     for root, _, files in os.walk(pdf_path):
-    #         for file in files:
-    #             if file.lower().endswith(".pdf"):
-    #                 full_pdf_path = os.path.join(root, file)
-    #                 relative_path = os.path.relpath(full_pdf_path, pdf_path) # get relative path for subfolder info
-    #                 groups = ", ".join(relative_path.split("\\")[0:-1])   # Added to fiind out all the required groups
-
-    #                 _process_single_pdf(full_pdf_path, collection, relative_path, pdf_path, groups)  # Pass relative path
     if pdf_path.lower().endswith(".pdf"):
         groups = ", ".join(pdf_path.split("\\")[2:-1])
+        if groups == "":
+            groups = "all"
         _process_single_pdf(pdf_path, collection, os.path.basename(pdf_path), os.path.dirname(pdf_path), groups) # handle single pdf
     else:
         print(f"Error: {pdf_path} is not a valid PDF file or directory.")
