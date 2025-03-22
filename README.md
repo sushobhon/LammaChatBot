@@ -9,6 +9,8 @@ This repository contains the code for a Retrieval-Augmented Generation (RAG) Que
 * **Conversation History:** Maintains and utilizes conversation history for context.
 * **"I don't know" Handling:** Gracefully handles questions that cannot be answered from the provided information.
 
+## Access to Particular File:
+All PDF file must be inside `data` folder. Any file in `data` folder can be accessed by all users. We can create multiple sub-folders inside `data` folder. The name of the sub-folder is the group name. Any file inside a particular sub-folder can be accessed by the members of that group. We can create multiple sub-folder inside any sub-folder.
 
 # How to Run?
 
