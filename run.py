@@ -1,28 +1,19 @@
+# Importing Necessary Libraries
 import re
 import json
 import os
 import chromadb
-import Helper_function
+import Helper_functions as hf
 from langchain_ollama import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 from chromadb.utils import embedding_functions
+
 
 ## Part 1:
 # Specifying the model
 # model = OllamaLLM(model= "deepseek-r1:8b", temperature= 0)
 model = OllamaLLM(model= 'llama3.2:latest', temperature= 0)
 
-# # Defining template
-# template = """
-# You are a helpful Assistent who search answers from a given context.
-# Answer the question below. If the answer is not present in conversation history and context text return "I don't Know".
-# Do not answer anything that that not present in the context or conversion history.
-
-# Here is the conversation history: {conversation_history}
-# Context: {context}
-# Question: {question}
-# Answer:
-# """
 template = """
 You are a helpful Q&A assistant. Your goal is to answer user questions based on the provided context and conversation history. If the answer cannot be found within the provided information, respond with "I don't know."
 
@@ -65,13 +56,14 @@ if COLLECTION_NAME not in client.list_collections():
 else:
     collection = client.get_collection(name=COLLECTION_NAME, embedding_function=embedding_function)
 
-# Rebuild if needed
-Helper_function.rebuild_database(
+# Loading or Building the Vector Database
+hf.rebuild_database(      # hf.
     pdf_directory,
     collection_name= COLLECTION_NAME,
     collection= collection
     ) 
 
+# Defining a function to handel the conversation history
 def handle_conversation(filename="chat_history.json"):
     """Handles the conversation, storing only the last 5 exchanges."""
 
@@ -81,6 +73,8 @@ def handle_conversation(filename="chat_history.json"):
     except FileNotFoundError:
         chat_history = []
 
+    filter = input("Enter the Group Name: ")
+
     print("BOT: Type your question to start. Type 'exit' to Exit chat!!!")
 
     while True:
@@ -89,7 +83,7 @@ def handle_conversation(filename="chat_history.json"):
             break
         
         # fininding Relevent Chunks of Data
-        search_results = Helper_function.search_chroma(user_input)
+        search_results = hf.search_chroma(user_input, filter= filter)
 
         # Creating context for LLM
         context = ""
@@ -114,6 +108,14 @@ def handle_conversation(filename="chat_history.json"):
 
         result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL).strip()
         print(result)
+        
+        if result != "I don't know.":
+            for entry in search_results["metadatas"][0]:
+                source = entry['source']
+                page = entry['page']
+                chunk = entry['chunk']
+                print(f"Source: {source}, Page: {page}, Chunk: {chunk}")
+
 
         # Update chat history (list of dictionaries)
         chat_history.append({"user": user_input, "bot": result})
